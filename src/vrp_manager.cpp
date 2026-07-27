@@ -115,6 +115,7 @@ QVariantList VrpManager::gamesInfo() const
 QCoro::Task<bool> VrpManager::updateMetadata()
 {
     vrp_torrent_.update();
+    vrp_public_.setConfigUrl(settings()->publicConfigUrl());
     if (!co_await vrp_public_.update()) {
         qWarning() << "Update config failed";
         co_return false;

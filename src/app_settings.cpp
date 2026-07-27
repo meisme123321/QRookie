@@ -32,6 +32,7 @@ AppSettings::AppSettings(QObject *parent)
     , data_path_(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
     , keystore_path_(QString())
     , last_wireless_addr_(QString())
+    , public_config_url_(QString())
     , theme_(QString())
 {
     loadAppSettings();
@@ -69,6 +70,7 @@ void AppSettings::loadAppSettings()
     }
 
     last_wireless_addr_ = settings_->value("last_wireless_addr", last_wireless_addr_).toString();
+    public_config_url_ = settings_->value("public_config_url", public_config_url_).toString();
 
     theme_ = settings_->value("theme", theme_).toString();
     if (theme_.isEmpty()) {
@@ -139,6 +141,13 @@ void AppSettings::setLastWirelessAddr(const QString &addr)
     last_wireless_addr_ = addr;
     settings_->setValue("last_wireless_addr", last_wireless_addr_);
     emit lastWirelessAddrChanged(addr);
+}
+
+void AppSettings::setPublicConfigUrl(const QString &public_config_url)
+{
+    public_config_url_ = public_config_url;
+    settings_->setValue("public_config_url", public_config_url_);
+    emit publicConfigUrlChanged(public_config_url);
 }
 
 void AppSettings::setTheme(const QString &theme)

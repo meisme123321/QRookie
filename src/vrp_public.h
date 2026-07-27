@@ -37,6 +37,7 @@ public:
     {
         return password_;
     }
+    void setConfigUrl(const QString &config_url);
 
 private:
     QCoro::Task<QPair<bool, QByteArray>> downloadJson(const QString url);
@@ -44,6 +45,7 @@ private:
 
     QString base_url_;
     QString password_;
+    QString config_url_;
     QNetworkAccessManager manager_;
 };
 

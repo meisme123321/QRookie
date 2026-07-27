@@ -39,7 +39,11 @@ Kirigami.ApplicationWindow {
     title: qsTr("QRookie")
     Component.onCompleted: {
         deviceManager.enableAutoUpdate();
-        vrp.updateMetadataQml();
+        if (app.vrp.settings.publicConfigUrl.length === 0) {
+            publicConfigDialog.open();
+        } else {
+            vrp.updateMetadataQml();
+        }
     }
 
     StackLayout {
@@ -70,6 +74,54 @@ Kirigami.ApplicationWindow {
     }
 
     deviceManager: vrp.deviceManager()
+
+    Dialog {
+        id: publicConfigDialog
+        modal: true
+        title: qsTr("Public Config URL")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        contentItem: ColumnLayout {
+            spacing: 10
+            width: 560
+
+            Text {
+                text: qsTr("Enter the public config URL to download VRP metadata and install packages.")
+                wrapMode: Text.WordWrap
+                width: parent.width
+            }
+
+            TextField {
+                id: publicConfigUrlField
+                text: app.vrp.settings.publicConfigUrl
+                placeholderText: qsTr("https://example.com/vrp-public.json")
+                Layout.fillWidth: true
+                focus: true
+            }
+
+            Text {
+                id: urlErrorText
+                text: qsTr("A valid public config URL is required.")
+                color: "red"
+                visible: publicConfigUrlField.text.trim().length === 0
+                wrapMode: Text.WordWrap
+                width: parent.width
+            }
+        }
+
+        onAccepted: {
+            if (publicConfigUrlField.text.trim().length > 0) {
+                app.vrp.settings.publicConfigUrl = publicConfigUrlField.text.trim();
+                vrp.updateMetadataQml();
+            } else {
+                publicConfigDialog.open();
+            }
+        }
+
+        onRejected: {
+            Qt.quit();
+        }
+    }
 
     header: TabBar {
         id: bar

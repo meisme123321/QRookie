@@ -31,6 +31,7 @@ class AppSettings : public QObject
     Q_PROPERTY(QString cachePath READ cachePath WRITE setCachePath NOTIFY cachePathChanged)
     Q_PROPERTY(QString dataPath READ dataPath WRITE setDataPath NOTIFY dataPathChanged)
     Q_PROPERTY(QString lastWirelessAddr READ lastWirelessAddr WRITE setLastWirelessAddr NOTIFY lastWirelessAddrChanged)
+    Q_PROPERTY(QString publicConfigUrl READ publicConfigUrl WRITE setPublicConfigUrl NOTIFY publicConfigUrlChanged)
     Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
 
 public:
@@ -82,6 +83,12 @@ public:
     }
     void setLastWirelessAddr(const QString &addr);
 
+    QString publicConfigUrl() const
+    {
+        return public_config_url_;
+    }
+    void setPublicConfigUrl(const QString &public_config_url);
+
     QString theme() const
     {
         return theme_;
@@ -96,6 +103,7 @@ signals:
     void dataPathChanged(QString data_path);
     void keyStorePathChanged(QString keystore_path);
     void lastWirelessAddrChanged(QString addr);
+    void publicConfigUrlChanged(QString public_config_url);
     void themeChanged(QString theme);
 
 private:
@@ -109,6 +117,7 @@ private:
     QString data_path_;
     QString keystore_path_;
     QString last_wireless_addr_;
+    QString public_config_url_;
     QString theme_;
 };
 

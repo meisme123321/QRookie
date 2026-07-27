@@ -28,13 +28,24 @@ VrpPublic::VrpPublic(QObject *parent)
     : QObject(parent)
     , base_url_("")
     , password_("")
+    , config_url_("")
     , manager_(nullptr)
 {
 }
 
+void VrpPublic::setConfigUrl(const QString &config_url)
+{
+    config_url_ = config_url;
+}
+
 QCoro::Task<bool> VrpPublic::update()
 {
-    static const QVector<QString> urls = {"https://vrpirates.wiki/downloads/vrp-public.json"};
+    if (config_url_.isEmpty()) {
+        qWarning() << "Public config URL is not configured.";
+        co_return false;
+    }
+
+    const QVector<QString> urls = {config_url_};
 
     for (auto url : urls) {
         qDebug() << "Downloading vrp-public.json from " << url;

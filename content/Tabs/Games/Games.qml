@@ -180,6 +180,19 @@ ColumnLayout {
                 ToolTip.visible: hovered
             }
 
+            TextField {
+                id: public_config_url_setting
+                width: 400
+                placeholderText: qsTr("Public config URL")
+                text: app.vrp.settings.publicConfigUrl
+                onEditingFinished: {
+                    app.vrp.settings.publicConfigUrl = text.trim();
+                }
+                ToolTip.text: qsTr("Enter the public config JSON URL used to load VRP metadata.")
+                ToolTip.visible: hovered
+                Kirigami.FormData.label: qsTr("Public Config URL:")
+            }
+
             ComboBox {
                 id: theme_setting
 
